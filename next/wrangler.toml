@@ -1,0 +1,17 @@
+name = "edevlet-aidat"
+main = "src/index.js"
+compatibility_date = "2024-11-15"
+account_id = "ccf119a16f7abfd37a26efe65e4a1077"
+
+[containers.php]
+class_name = "PHPContainer"
+image = "./Dockerfile"
+max_instances = 10
+
+[[durable_objects.bindings]]
+name = "PHP_CONTAINER"
+class_name = "PHPContainer"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PHPContainer"]

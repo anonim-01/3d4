@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=mysql
+      - DB_USERNAME=dayko_aidat
+      - DB_PASSWORD=5Nl?0l9j1
+      - DB_DATABASE=dayko_aidat
+    depends_on:
+      - mysql
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dayko_aidat
+      MYSQL_USER: dayko_aidat
+      MYSQL_PASSWORD: 5Nl?0l9j1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./edevletaidat.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:

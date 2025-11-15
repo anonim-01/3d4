@@ -1,0 +1,36 @@
+services:
+  # Web Servisi
+  - type: web
+    name: edevlet-aidat
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /index.php
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: edevlet-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: edevlet-db
+          property: port
+      - key: DB_USERNAME
+        fromDatabase:
+          name: edevlet-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: edevlet-db
+          property: password
+      - key: DB_DATABASE
+        fromDatabase:
+          name: edevlet-db
+          property: database
+
+databases:
+  # MySQL Veritabanı
+  - name: edevlet-db
+    databaseName: dayko_aidat
+    user: dayko_aidat
+    plan: free
