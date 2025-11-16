@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env.example
+node_modules
+*.log
+*.md
+setup.php
+config.example.php
+database.php
+README_KURULUM.md

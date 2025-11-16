@@ -1,22 +1,24 @@
 {
-	"name": "edevlet-aidat-cloudflare",
-	"version": "1.0.0",
-	"description": "E-Devlet Aidat System on Cloudflare Containers",
-	"main": "src/index.ts",
-	"scripts": {
-		"dev": "wrangler dev",
-		"deploy": "wrangler deploy",
-		"build": "docker build -t edevlet-aidat .",
-		"containers:list": "wrangler containers list",
-		"containers:images": "wrangler containers images list"
-	},
-	"dependencies": {
-		"@cloudflare/containers": "^0.0.28"
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20241011.1",
-		"@types/node": "^24.10.1",
-		"typescript": "^5.8.3",
-		"wrangler": "^4.47.0"
-	}
+  "name": "edevlet-aidat-cloudflare",
+  "version": "1.0.0",
+  "description": "E-Devlet Aidat System on Cloudflare Containers",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "echo 'Netlify build step - no action required'",
+    "containers:list": "wrangler containers list",
+    "containers:images": "wrangler containers images list",
+    "db:migrate": "node migrate.js"
+  },
+  "dependencies": {
+    "@cloudflare/containers": "^0.0.28",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251115.0",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.47.0"
+  }
 }
